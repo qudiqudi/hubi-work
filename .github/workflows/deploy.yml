@@ -28,7 +28,10 @@ jobs:
       - name: Remove dev and worker files
         run: rm -rf dev.js worker/
       - name: Stamp service worker cache version
-        run: sed -i "s/const CACHE_NAME = .*/const CACHE_NAME = 'hubi-tracker-${GITHUB_SHA::7}';/" sw.js
+        run: |
+          SHA="${GITHUB_SHA:0:7}"
+          sed -i "s/const CACHE_NAME = .*/const CACHE_NAME = 'hubi-tracker-${SHA}';/" sw.js
+          head -1 sw.js
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
